@@ -14,19 +14,23 @@ export class SearchBar extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {showProduct: false};
-        this.handleChange = this.handleChange.bind(this);
+        this.handleChangeFilterText = this.handleChangeFilterText.bind(this);
+        this.handleCheckBox = this.handleCheckBox.bind(this);
+        this.inStockOnly = props.inStockOnly;
+        this.filterText = props.filterText;
     }
 
-    handleChange(event) {
-        const target = event.target;
-        const value = target.name === 'showProduct' ? target.checked : target.value;
-        const name = target.name;
+    handleChangeFilterText(event) {
+        this.filterText = event.target.value;
+        this.props.onFilterTextChange(this.filterText);
 
-        this.setState({
-            [name]: value
-        })
     }
+
+    handleCheckBox(event) {
+        this.inStockOnly = event.target.checked;
+        this.props.onCheckChange(this.inStockOnly);
+    }
+
 
     render() {
         return (
@@ -36,8 +40,8 @@ export class SearchBar extends React.Component {
                         className="form-control"
                         type="text"
                         name="product"
-                        value={this.state.value}
-                        onChange={this.handleChange}
+                        value={this.filterText}
+                        onChange={this.handleChangeFilterText}
                         placeholder="Search ..."/>
                 </div>
 
@@ -46,8 +50,8 @@ export class SearchBar extends React.Component {
                         className="form-check-input"
                         type="checkbox"
                         name="showProduct"
-                        checked={this.state.showProduct}
-                        onChange={this.handleChange}
+                        checked={this.inStockOnly}
+                        onChange={this.handleCheckBox}
                         id="check1"/>
                     <label className="form-check-label" htmlFor="check1">Only show products in stock</label>
                 </div>
